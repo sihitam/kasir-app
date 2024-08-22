@@ -12,15 +12,15 @@ class TopSellingProductsWidget extends Widget
 
     public function render(): view
     {
-        $topSellingProducts = DB::table('transaksi_detail')
+        $topSellingProducts = DB::table('transaksi_details')
             ->select('produk_id', DB::raw('SUM(jumlah) as total_quantity'))
             ->groupBy('produk_id')
             ->orderBy('total_quantity', 'desc')
-            ->limit(10)
+            ->limit(1)
             ->get();
 
         // Get product names and details
-        $products = DB::table('produk')->whereIn('id', $topSellingProducts->pluck('produk_id'))->get()->keyBy('id');
+        $products = DB::table('produks')->whereIn('id', $topSellingProducts->pluck('produk_id'))->get()->keyBy('id');
 
         $topSellingProducts = $topSellingProducts->map(function ($item) use ($products) {
             return [
@@ -30,7 +30,7 @@ class TopSellingProductsWidget extends Widget
             ];
         });
 
-        return view('filament.widgets.top-selling-products-widget', [
+        return view('filament.resources.dashboard-resource.widgets.top-selling-products-widget', [
             'topSellingProducts' => $topSellingProducts,
         ]);
     }

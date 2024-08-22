@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\View;
 
 class TransaksiResource extends Resource
 {
@@ -123,16 +124,13 @@ class TransaksiResource extends Resource
                                 'gopay' => 'Gopay'
                             ])
                             ->reactive() // Enable reactivity
-                            ->required()
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                if ($state === 'gopay') {
-                                    $set('qris_image', true);
-                                } else {
-                                    $set('qris_image', false);
-                                }
-                            }),
+                            ->required(),
+
+                        View::make('filament.components.qris')
+                            ->visible(fn($get) => $get('metode_pembayaran') === 'gopay'),
+
                     ])
-                    ->columns(2)
+                    ->columns(3)
             ]);
     }
 

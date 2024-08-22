@@ -1,0 +1,1 @@
+<img src="{{ asset('storage/images/gopay-qrcode.jpg') }}" alt="Gopay QRIS" style="width: 250px; height: 250px;">
